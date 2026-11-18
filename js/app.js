@@ -106,29 +106,32 @@ function startGift(code) {
     }
   })();
 
-  // ---- step 3: turn the key → the lid opens, the figure rises, notes float up.
-  // The buttons stay on screen the whole time: play it again once it ends, or make one back any time.
-  const windBtn = $('wind');
+  // ---- step 3: turn the key → the lid opens, the figure rises, the song plays once.
+  // When it ends: "Play it again" or "Make one back".
+  const hasNote = Boolean(gift.message.trim());
   let wound = false;
   function wind() {
     if (!opened || audio.playing) return;
     showKeyHint = false;
+    $('wind').hidden = true;
+    $('gift-after').hidden = true;
     $('gift').classList.add('open');
     if (box) { box.setLid(true); box.setPlaying(true); }
-    audio.play(song, { loops: 2, windDown: true });
-    if (!wound && hasNote) setTimeout(() => { $('read').hidden = false; showNoteHint = !letterSeen; }, reduceMotion ? 0 : 1600);
+    audio.play(song, { loops: 1, windDown: true });
+    if (!wound && hasNote) setTimeout(() => { if (!letterSeen) $('note-tip').hidden = false; }, reduceMotion ? 0 : 1600);
     wound = true;
   }
-  audio.onChange((playing) => {
+  audio.onChange((playing, reason) => {
     if (box) box.setPlaying(playing);
-    windBtn.disabled = playing;
-    windBtn.textContent = playing ? 'Playing…' : (wound ? 'Play it again' : 'Turn the key');
+    if (!playing && reason === 'ended') {
+      $('gift-after').hidden = false;
+      if ($('letter').hidden) $('again').focus({ preventScroll: true });
+    }
   });
-  windBtn.addEventListener('click', wind);
+  $('wind').addEventListener('click', wind);
+  $('again').addEventListener('click', wind);
 
-  // ---- the note: tap the card in the lid (or "Read the note") and it opens as a letter
-  const hasNote = Boolean(gift.message.trim());
-  let showNoteHint = false;
+  // ---- the note: tap the card in the lid and it opens as a letter
   let letterSeen = false;
   $('letter-to').textContent = gift.to ? `${gift.to},` : 'For you,';
   $('letter-text').textContent = gift.message;
@@ -137,7 +140,7 @@ function startGift(code) {
   function openLetter() {
     if (!hasNote || !wound || !$('letter').hidden) return;
     letterSeen = true;
-    showNoteHint = false;
+    $('note-tip').hidden = true;
     returnFocus = document.activeElement;
     $('letter').hidden = false;
     $('letter-close').focus({ preventScroll: true });
@@ -145,25 +148,11 @@ function startGift(code) {
   function closeLetter() {
     if ($('letter').hidden) return;
     $('letter').hidden = true;
-    (returnFocus && returnFocus !== document.body ? returnFocus : $('read')).focus({ preventScroll: true });
+    if (returnFocus && returnFocus !== document.body && !returnFocus.closest('[hidden]')) returnFocus.focus({ preventScroll: true });
   }
-  $('read').addEventListener('click', openLetter);
   $('letter-close').addEventListener('click', closeLetter);
   $('letter').addEventListener('click', (e) => { if (e.target === $('letter')) closeLetter(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLetter(); });
-
-  const noteHint = $('note-hint');
-  (function trackNote() {
-    requestAnimationFrame(trackNote);
-    let pt = showNoteHint && box ? box.cardScreen() : null;
-    if (pt) {
-      const area = $('gift').getBoundingClientRect();
-      pt = [pt[0] - area.left, pt[1] - area.top];
-      if (pt[0] < 60 || pt[1] < 0 || pt[0] > area.width - 60 || pt[1] > area.height) pt = null;
-    }
-    noteHint.hidden = !pt;
-    if (pt) { noteHint.style.left = `${pt[0]}px`; noteHint.style.top = `${pt[1]}px`; }
-  })();
 
   if (!reduceMotion && box) floatingNotes($('notes-canvas'), box);
 }

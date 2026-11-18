@@ -157,18 +157,13 @@
     <div id="key-hint" class="key-hint" hidden aria-hidden="true"><span>Turn the key</span></div>
     <div id="gift-bottom" class="gift-bottom" hidden>
       <p id="turn-hint" class="turn-hint"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5a7 7 0 1 1-6.6 4.7l1.9.6A5 5 0 1 0 12 7v3L7.5 6 12 2z"/></svg>Drag to turn the box around</p>
-      <div class="gift-actions">
-        <button id="wind" class="btn btn-brass btn-big" type="button">Turn the key</button>
-        <div class="gift-more">
-          <button id="read" class="btn btn-ghost" type="button" hidden>
-            <svg class="ic" aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2.2"/><path d="M3.6 7.2 12 13l8.4-5.8"/></svg>Read the note
-          </button>
-          <a id="remix" class="btn btn-ghost" href="./">Make one back</a>
-        </div>
+      <p id="note-tip" class="note-tip" hidden>Tap the note inside the lid to read it</p>
+      <button id="wind" class="btn btn-brass btn-big" type="button">Turn the key</button>
+      <div id="gift-after" class="gift-after" hidden>
+        <button id="again" class="btn btn-brass" type="button">Play it again</button>
+        <a id="remix" class="btn btn-ghost" href="./">Make one back</a>
       </div>
     </div>
-    <!-- a pulsing label over the note card in the lid -->
-    <div id="note-hint" class="note-hint" hidden aria-hidden="true"><span>Tap the note to read it</span></div>
     <!-- the note, unfolded as a letter -->
     <div id="letter" class="letter-scene" hidden>
       <div class="letter" role="dialog" aria-modal="true" aria-labelledby="letter-to" tabindex="-1">

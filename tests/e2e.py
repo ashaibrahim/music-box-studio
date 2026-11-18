@@ -97,20 +97,25 @@ with sync_playwright() as p:
     g.mouse.move(cb['x'] + cb['width'] * 0.3, cb['y'] + cb['height'] * 0.5); g.mouse.down()
     g.mouse.move(cb['x'] + cb['width'] * 0.45, cb['y'] + cb['height'] * 0.5, steps=8); g.mouse.up()
     check('used' in g.get_attribute('#turn-hint', 'class'), 'the hint fades once the box is turned')
-    check(g.is_visible('#remix'), '"Make one back" is there from the start')
+    check(g.is_hidden('#gift-after'), 'no other buttons before the music')
     g.click('#wind'); g.wait_for_timeout(2500)
-    check(g.is_disabled('#wind') and g.inner_text('#wind') == 'Playing…', 'turning the key starts it')
-    g.wait_for_selector('#note-hint:not([hidden])', timeout=8000)
-    check(g.is_visible('#read'), 'a label and a button say the note can be read')
+    check(g.is_hidden('#wind') and g.is_hidden('#gift-after'), 'turning the key starts it')
+    g.wait_for_selector('#note-tip:not([hidden])', timeout=8000)
+    check('Tap the note' in g.inner_text('#note-tip'), 'a quiet line says the note can be read')
     g.screenshot(path=f'{OUT}/gift-playing.png')
-    hb = g.locator('#note-hint').bounding_box()
-    g.mouse.click(hb['x'] + hb['width'] / 2, hb['y'] + hb['height'] / 2); g.wait_for_timeout(800)
+    # tap around the upper middle of the box until we hit the card in the lid
+    cb = g.locator('#gift-canvas').bounding_box()
+    for fy in (0.2, 0.25, 0.3, 0.35, 0.4, 0.45):
+        for fx in (0.45, 0.5, 0.55):
+            g.mouse.click(cb['x'] + cb['width'] * fx, cb['y'] + cb['height'] * fy); g.wait_for_timeout(150)
+            if g.is_visible('#letter'): break
+        if g.is_visible('#letter'): break
     check(g.is_visible('#letter') and 'Happy birthday, Mei' in g.inner_text('#letter-text'), 'tapping the note in the lid opens the letter')
     g.screenshot(path=f'{OUT}/gift-letter.png')
     g.keyboard.press('Escape'); g.wait_for_timeout(300)
-    check(g.is_hidden('#letter') and g.is_hidden('#note-hint'), 'the letter closes, and the label goes away')
-    g.wait_for_function("document.querySelector('#wind').textContent === 'Play it again'", timeout=20000)
-    check(g.is_enabled('#wind') and g.is_visible('#remix'), 'play it again once it ends')
+    check(g.is_hidden('#letter') and g.is_hidden('#note-tip'), 'the letter closes, and the tip goes away')
+    g.wait_for_selector('#gift-after:not([hidden])', timeout=20000)
+    check(g.is_visible('#again') and g.is_visible('#remix'), 'play it again and make one back appear once it ends')
     g.screenshot(path=f'{OUT}/gift-done.png')
 
     # broken link
