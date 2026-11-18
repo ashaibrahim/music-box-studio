@@ -1,0 +1,12 @@
+{
+  "name": "music-box-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Compose a melody on a 3D music box and send it as a gift. No dependencies.",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/song.test.mjs"
+  },
+  "engines": { "node": ">=18" },
+  "license": "MIT"
+}

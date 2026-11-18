@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Music Box Studio</title>
+  <meta name="description" content="Punch a melody into a music box, hear it play, and send the box to someone.">
+  <meta name="theme-color" content="#fff3c4">
+  <!-- link previews (WhatsApp, Instagram, iMessage…). After deploying, change og:image to the full address, e.g. https://you.github.io/music-box-studio/og-image.jpg -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="A music box, made for you">
+  <meta property="og:description" content="Someone composed a little melody and put it in a music box. Open it and turn the key.">
+  <meta property="og:image" content="og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;600;700;800;900&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- ======================= STUDIO ======================= -->
+  <div id="studio" class="studio">
+    <header class="masthead">
+      <h1 class="wordmark">Music Box Studio</h1>
+      <p class="lede">Punch a melody into the strip, hear it play, then send the box to someone.</p>
+    </header>
+
+    <div class="bench">
+      <section class="stage" aria-label="Your music box">
+        <canvas id="box-canvas" class="box-canvas" role="img" aria-label="A 3D music box. Drag to turn it, scroll to zoom. Click the key to play."></canvas>
+        <div class="stage-controls">
+          <button id="play" class="btn btn-brass play-btn" type="button" aria-pressed="false">
+            <svg class="ic" aria-hidden="true" viewBox="0 0 24 24"><path id="play-icon" d="M8 5.5v13l10-6.5z"/></svg>
+            <span id="play-label">Play</span>
+          </button>
+          <p class="hint">Drag to turn the box. Click the key to play, or the lid to close it.</p>
+        </div>
+        <p id="no-webgl" class="no-webgl" hidden>This browser can't show the 3D box. You can still compose and send your melody.</p>
+      </section>
+
+      <aside class="tag" aria-labelledby="gift-title">
+        <span class="tag-hole" aria-hidden="true"></span>
+        <h2 id="gift-title">Wrap it up</h2>
+
+        <fieldset class="field">
+          <legend>Finish</legend>
+          <div id="colors" class="swatches" role="radiogroup" aria-label="Finish"></div>
+        </fieldset>
+
+        <fieldset class="field">
+          <legend>Figure on the stand</legend>
+          <div id="figures" class="options" role="radiogroup" aria-label="Figure on the stand"></div>
+        </fieldset>
+
+        <label class="field line">
+          <span>Engraving</span>
+          <input id="gift-to" maxlength="24" placeholder="For Mei" autocomplete="off">
+        </label>
+        <label class="field line">
+          <span>From</span>
+          <input id="gift-from" maxlength="24" placeholder="Your name" autocomplete="off">
+        </label>
+        <label class="field line">
+          <span>Note inside the lid <small><span id="msg-count">0</span>/220</small></span>
+          <textarea id="gift-message" maxlength="220" rows="3" placeholder="Happy birthday! I made this tune for you."></textarea>
+        </label>
+
+        <button id="make-link" class="btn btn-brass wide" type="button">Create gift link</button>
+        <div id="share" class="share" hidden>
+          <label for="share-url">Gift link</label>
+          <div class="share-row">
+            <input id="share-url" readonly>
+            <button id="copy" class="btn" type="button">Copy</button>
+          </div>
+          <a id="preview" class="text-link" href="#" target="_blank" rel="noopener">Open it the way they will</a>
+        </div>
+        <p id="gift-msg" class="tag-note" role="status"></p>
+      </aside>
+    </div>
+
+    <section class="melody" aria-labelledby="melody-title">
+      <div class="melody-head">
+        <h2 id="melody-title">Melody</h2>
+        <div class="toolbar">
+          <label class="tool">
+            <span>Start from</span>
+            <select id="tune"></select>
+          </label>
+          <label class="tool">
+            <span>Tempo <output id="tempo-out">96</output></span>
+            <input id="tempo" type="range" min="50" max="180" step="1" value="96">
+          </label>
+          <label class="tool">
+            <span>Time</span>
+            <select id="meter"><option value="4">4/4</option><option value="3">3/4</option></select>
+          </label>
+          <div class="tool">
+            <span id="bars-label">Length</span>
+            <div class="stepper" role="group" aria-labelledby="bars-label">
+              <button id="bars-down" class="btn btn-square" type="button" aria-label="Fewer bars">−</button>
+              <output id="bars-out" aria-live="polite">8 bars</output>
+              <button id="bars-up" class="btn btn-square" type="button" aria-label="More bars">+</button>
+            </div>
+          </div>
+          <div class="tool tool-end">
+            <button id="undo" class="btn" type="button">Undo</button>
+            <button id="clear" class="btn" type="button">Clear</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="strip">
+        <div id="grid-labels" class="grid-labels" aria-hidden="true"></div>
+        <div id="grid-scroll" class="grid-scroll">
+          <canvas id="grid" class="grid" tabindex="0" role="application"
+            aria-label="Melody strip. Use the arrow keys to move, Enter or Space to punch or fill a hole."
+            aria-describedby="grid-status"></canvas>
+        </div>
+      </div>
+      <p id="grid-status" class="sr-only" aria-live="polite"></p>
+      <p class="strip-note"><span id="note-count">0</span> holes punched. Click to punch a hole, click it again to fill it, or drag to punch several. Low notes are at the bottom.</p>
+    </section>
+
+    <footer class="colophon">
+      <p>Starter tunes are in the public domain.</p>
+      <p><a class="credit" href="https://ashaibrahim.netlify.app/" target="_blank" rel="noopener">© 2026 Asha</a></p>
+    </footer>
+  </div>
+
+  <!-- ======================= GIFT VIEW ======================= -->
+  <div id="gift" class="gift" hidden>
+    <canvas id="gift-canvas" class="gift-canvas" role="img" aria-label="A music box made for you. Turn the key to play it."></canvas>
+    <canvas id="notes-canvas" class="notes-canvas" aria-hidden="true"></canvas>
+
+    <!-- step 1: the sealed envelope -->
+    <div id="envelope-scene" class="envelope-scene">
+      <p id="env-to" class="env-to">For you</p>
+      <button id="envelope" class="envelope" type="button" aria-label="Open the envelope">
+        <span class="env-back" aria-hidden="true"></span>
+        <span class="env-letter" aria-hidden="true"><span>♪</span></span>
+        <span class="env-pocket" aria-hidden="true"></span>
+        <span class="env-flap" aria-hidden="true"></span>
+        <span id="seal" class="seal" aria-hidden="true"><span id="seal-letter">♪</span></span>
+      </button>
+      <p id="env-from" class="env-from"></p>
+      <p class="env-hint">Tap the seal to open</p>
+    </div>
+
+    <!-- step 2: the box -->
+    <div id="gift-top" class="gift-top" hidden>
+      <h1 id="gift-heading">For you</h1>
+      <p id="gift-sub" class="gift-sub"></p>
+    </div>
+    <div id="key-hint" class="key-hint" hidden aria-hidden="true"><span>Turn the key</span></div>
+    <div id="gift-bottom" class="gift-bottom" hidden>
+      <p id="turn-hint" class="turn-hint"><svg class="ic" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5a7 7 0 1 1-6.6 4.7l1.9.6A5 5 0 1 0 12 7v3L7.5 6 12 2z"/></svg>Drag to turn the box around</p>
+      <p id="note-tip" class="note-tip" hidden>Tap the note inside the lid to read it</p>
+      <button id="wind" class="btn btn-brass btn-big" type="button">Turn the key</button>
+      <div id="gift-after" class="gift-after" hidden>
+        <button id="again" class="btn btn-brass" type="button">Play it again</button>
+        <a id="remix" class="btn btn-ghost" href="./">Make one back</a>
+      </div>
+    </div>
+    <!-- the note, unfolded as a letter -->
+    <div id="letter" class="letter-scene" hidden>
+      <div class="letter" role="dialog" aria-modal="true" aria-labelledby="letter-to" tabindex="-1">
+        <p id="letter-to" class="letter-to"></p>
+        <p id="letter-text" class="letter-text"></p>
+        <p id="letter-from" class="letter-from"></p>
+        <button id="letter-close" class="btn btn-brass" type="button">Close</button>
+      </div>
+    </div>
+    <div id="gift-error" class="gift-error" hidden></div>
+    <a class="credit gift-credit" href="https://ashaibrahim.netlify.app/" target="_blank" rel="noopener">© 2026 Asha</a>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,629 @@
+/* Music Box Studio
+   Pastel stationery: butter-yellow paper with stars, a notebook strip with a pink binder,
+   a stitched gift tag and sewing-button swatches. */
+:root {
+  --butter: #fff3c4;
+  --cream: #fffbf0;
+  --sky: #d3e6f9;
+  --sky-deep: #8db8e6;
+  --pink: #f48fb8;
+  --pink-deep: #c94683;
+  --pink-soft: #fde1ec;
+  --lilac: #cdb6e0;
+  --lilac-deep: #8f6fb0;
+  --mint: #cdebcb;
+  --plum: #5b3654;
+  --plum-soft: #85607e;
+  --round: "Fredoka", "Nunito", system-ui, sans-serif;
+  --ui: "Nunito", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+/* no double-tap zoom: taps on buttons and the box stay taps */
+html { touch-action: manipulation; -webkit-text-size-adjust: 100%; }
+body {
+  font: 500 16px/1.55 var(--ui);
+  color: var(--plum);
+  background-color: var(--butter);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cpolygon points='33.3,29.5 34.2,36.8 41.0,39.8 34.3,43.0 33.5,50.4 28.4,45.0 21.2,46.6 24.7,40.1 21.0,33.7 28.3,35.0' fill='%23f6b3cc' opacity='0.85' stroke='%23f6b3cc' stroke-width='2' stroke-linejoin='round'/%3E%3Cpolygon points='118.2,13.2 121.8,18.1 127.8,17.6 124.3,22.5 126.6,28.1 120.9,26.2 116.3,30.2 116.2,24.1 111.1,21.0 116.8,19.1' fill='%23bcd8f5' opacity='0.85' stroke='%23bcd8f5' stroke-width='2' stroke-linejoin='round'/%3E%3Cpolygon points='205.8,47.5 205.2,55.5 211.8,60.2 204.0,62.2 201.5,69.9 197.2,63.1 189.2,63.1 194.3,56.9 191.8,49.3 199.3,52.3' fill='%23d7c4ef' opacity='0.85' stroke='%23d7c4ef' stroke-width='2' stroke-linejoin='round'/%3E%3Cpolygon points='71.0,110.0 73.2,116.4 79.8,117.9 74.4,121.9 75.0,128.6 69.5,124.8 63.3,127.5 65.3,121.0 60.8,116.0 67.6,115.9' fill='%23ffd79e' opacity='0.85' stroke='%23ffd79e' stroke-width='2' stroke-linejoin='round'/%3E%3Cpolygon points='164.5,131.7 169.0,135.8 174.8,134.1 172.3,139.6 175.7,144.6 169.7,144.0 166.0,148.8 164.7,142.8 159.0,140.8 164.3,137.8' fill='%23bfe6c4' opacity='0.85' stroke='%23bfe6c4' stroke-width='2' stroke-linejoin='round'/%3E%3Cpolygon points='26.4,188.2 28.2,196.1 35.9,198.6 29.0,202.8 29.0,210.9 22.9,205.6 15.2,208.1 18.3,200.7 13.6,194.1 21.6,194.8' fill='%23bcd8f5' opacity='0.85' stroke='%23bcd8f5' stroke-width='2' stroke-linejoin='round'/%3E%3Cpolygon points='108.9,187.1 112.7,193.4 120.1,193.6 115.2,199.1 117.3,206.2 110.5,203.3 104.5,207.5 105.2,200.1 99.3,195.7 106.5,194.1' fill='%23f6b3cc' opacity='0.85' stroke='%23f6b3cc' stroke-width='2' stroke-linejoin='round'/%3E%3Cpolygon points='217.1,205.5 217.6,211.6 223.0,214.3 217.4,216.7 216.5,222.7 212.5,218.1 206.5,219.0 209.7,213.8 206.9,208.5 212.8,209.8' fill='%23ffd79e' opacity='0.85' stroke='%23ffd79e' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E");
+  min-height: 100vh;
+}
+[hidden] { display: none !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+h1, h2 { font-family: var(--round); font-weight: 600; margin: 0; letter-spacing: -0.01em; }
+:focus-visible { outline: 3px solid var(--lilac-deep); outline-offset: 3px; }
+
+/* ---------------------------------------------------------------- buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 7px 18px;
+  font: 700 0.95rem var(--ui);
+  color: var(--plum);
+  background: var(--cream);
+  border: 2px solid var(--plum);
+  border-radius: 14px;
+  box-shadow: 0 3px 0 var(--plum);
+  cursor: pointer;
+  text-decoration: none;
+}
+.btn:hover { background: #fff; }
+.btn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--plum); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+/* the main action: a glossy pink sticker */
+.btn-brass {
+  color: #fff;
+  background: linear-gradient(180deg, #f39ac0 0%, #e0679d 55%, var(--pink-deep) 100%);
+  border-color: #a2346a;
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.55), 0 3px 0 #a2346a;
+  text-shadow: 0 1px 0 rgba(120, 20, 70, 0.4);
+}
+.btn-brass:hover { background: linear-gradient(180deg, #f7aecd 0%, #e676a8 55%, #d0558d 100%); }
+.btn-brass:active { box-shadow: inset 0 2px 3px rgba(120, 20, 70, 0.35), 0 1px 0 #a2346a; }
+.btn-ghost { background: var(--cream); }
+.btn-square { width: 38px; min-height: 38px; padding: 0; font-size: 1.15rem; }
+.btn-big { min-height: 54px; padding: 10px 32px; font-size: 1.08rem; }
+.btn.wide { width: 100%; margin-top: 22px; }
+.ic { width: 16px; height: 16px; fill: currentColor; }
+
+/* ---------------------------------------------------------------- layout
+   The gift tag sits in the right column, level with the title. */
+.studio {
+  max-width: 1280px;
+  margin: 0 auto;
+  --pad: 32px;
+  padding: 40px var(--pad) 36px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  grid-template-areas:
+    "head   tag"
+    "stage  tag"
+    "melody melody"
+    "foot   foot";
+  column-gap: 40px;
+  align-items: start;
+}
+.bench { display: contents; }
+.masthead { grid-area: head; max-width: 640px; }
+.stage { grid-area: stage; position: relative; min-width: 0; }
+.tag { grid-area: tag; }
+.melody { grid-area: melody; }
+.colophon { grid-area: foot; }
+
+.wordmark {
+  font-size: clamp(2.6rem, 6vw, 4.4rem);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--pink-deep);
+  text-shadow: 3px 3px 0 #fff, 5px 5px 0 rgba(205, 182, 224, 0.9);
+}
+.lede { margin: 10px 0 0; font-size: 1.08rem; color: var(--plum-soft); max-width: 44ch; }
+
+.box-canvas {
+  display: block;
+  width: 100%;
+  height: min(60vh, 580px);
+  min-height: 380px;
+  cursor: grab;
+  touch-action: none;
+}
+.stage-controls { display: flex; align-items: center; gap: 16px; margin-top: -6px; }
+.play-btn { min-width: 108px; }
+.hint { margin: 0; font-size: 0.92rem; color: var(--plum-soft); }
+.no-webgl { position: absolute; inset: 0 0 60px; display: grid; place-items: center; padding: 30px; text-align: center; }
+
+/* ---------------------------------------------------------------- gift tag: pink, with a stitched edge */
+.tag {
+  position: relative;
+  padding: 50px 30px 28px;
+  color: var(--plum);
+  background: var(--pink-soft);
+  clip-path: polygon(16% 0, 84% 0, 100% 8%, 100% 100%, 0 100%, 0 8%);
+  filter: drop-shadow(0 6px 0 rgba(201, 70, 131, 0.25));
+}
+.tag::before {
+  /* the stitching */
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 2px dashed var(--pink);
+  clip-path: polygon(15% 0, 85% 0, 100% 7.5%, 100% 100%, 0 100%, 0 7.5%);
+  pointer-events: none;
+}
+.tag-hole {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  margin-left: -8px;
+  border-radius: 50%;
+  background: var(--butter);
+  box-shadow: 0 0 0 4px #fff, inset 0 2px 3px rgba(91, 54, 84, 0.35);
+}
+.tag h2 { font-size: 2rem; text-align: center; color: var(--pink-deep); line-height: 1.1; }
+.field { display: block; margin: 18px 0 0; padding: 0; border: 0; min-width: 0; }
+.field legend, .field > span { display: block; margin-bottom: 8px; font-size: 0.92rem; font-weight: 800; color: var(--plum); }
+.field small { font-weight: 600; float: right; color: var(--plum-soft); }
+.field.line input, .field.line textarea {
+  width: 100%;
+  padding: 4px 0 6px;
+  font: 600 1.08rem/1.4 var(--ui);
+  color: var(--plum);
+  background: transparent;
+  border: 0;
+  border-bottom: 2px dotted var(--pink-deep);
+  border-radius: 0;
+}
+.field.line textarea {
+  resize: vertical;
+  min-height: 96px;
+  background-image: repeating-linear-gradient(transparent 0 31px, rgba(201, 70, 131, 0.3) 31px 33px);
+  line-height: 33px;
+  padding-top: 0;
+  border-bottom: 0;
+}
+.field.line input:focus, .field.line textarea:focus { outline: none; border-bottom-style: solid; }
+.field.line input::placeholder, .field.line textarea::placeholder { color: rgba(91, 54, 84, 0.4); }
+
+/* finish choices are little sewing buttons */
+.swatches { display: flex; flex-direction: column; gap: 10px; }
+.swatch-row { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
+.swatch-caption { width: 100%; font-size: 0.8rem; font-weight: 700; color: var(--plum-soft); }
+.swatch {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid rgba(91, 54, 84, 0.25);
+  cursor: pointer;
+  position: relative;
+  box-shadow: inset 0 0 0 5px rgba(255, 255, 255, 0.35), inset 0 -4px 6px rgba(0, 0, 0, 0.1);
+}
+.swatch::before {
+  /* the two thread holes */
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 5px;
+  margin: -2.5px 0 0 -7px;
+  background: radial-gradient(circle at 2.5px 50%, rgba(91, 54, 84, 0.45) 2px, transparent 2.6px), radial-gradient(circle at 11.5px 50%, rgba(91, 54, 84, 0.45) 2px, transparent 2.6px);
+}
+.swatch.patterned { width: 33px; height: 33px; border-radius: 10px; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(91, 54, 84, 0.25); }
+.swatch.patterned::before { display: none; }
+.swatch.patterned[aria-checked="true"]::after { border-radius: 14px; }
+.swatch[aria-checked="true"]::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border: 2px dashed var(--pink-deep);
+  border-radius: 50%;
+}
+.options { display: flex; flex-wrap: wrap; gap: 7px; }
+.option {
+  min-height: 36px;
+  padding: 5px 13px;
+  font: 700 0.9rem var(--ui);
+  color: var(--plum);
+  background: #fff;
+  border: 2px solid rgba(91, 54, 84, 0.2);
+  border-radius: 12px;
+  cursor: pointer;
+}
+.option:hover { border-color: var(--pink); }
+.option[aria-checked="true"] { color: #fff; background: var(--pink-deep); border-color: var(--pink-deep); }
+
+.share { margin-top: 16px; font-size: 0.92rem; }
+.share label { display: block; margin-bottom: 6px; font-weight: 800; }
+.share-row { display: flex; gap: 8px; }
+.share-row input { flex: 1; min-width: 0; padding: 8px 10px; font: 600 0.85rem var(--ui); color: var(--plum); background: #fff; border: 2px solid rgba(91, 54, 84, 0.2); border-radius: 10px; }
+.share .btn { min-height: 38px; }
+.text-link { display: inline-block; margin-top: 8px; color: var(--pink-deep); font-weight: 800; }
+.tag-note { margin: 10px 0 0; font-size: 0.92rem; font-weight: 700; color: var(--pink-deep); min-height: 1em; }
+
+/* ---------------------------------------------------------------- melody: a notebook strip with a pink binder */
+.melody { margin-top: 40px; }
+.melody-head { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 14px 40px; margin-bottom: 30px; }
+.melody-head h2 { font-size: 2.3rem; color: var(--pink-deep); line-height: 1; text-shadow: 2px 2px 0 #fff; }
+.toolbar { flex: 1; display: flex; flex-wrap: wrap; align-items: flex-end; gap: 14px 24px; }
+.tool { display: flex; flex-direction: column; gap: 6px; font-size: 0.9rem; font-weight: 800; color: var(--plum); }
+.tool output { color: var(--pink-deep); }
+.tool select {
+  min-width: 190px;
+  min-height: 40px;
+  padding: 6px 10px;
+  font: 700 0.95rem var(--ui);
+  color: var(--plum);
+  background: #fff;
+  border: 2px solid var(--plum);
+  border-radius: 12px;
+}
+.tool input[type="range"] { width: 160px; min-height: 40px; accent-color: var(--pink-deep); background: none; }
+.tool-end { flex-direction: row; gap: 8px; margin-left: auto; }
+.stepper { display: flex; align-items: center; gap: 10px; }
+.stepper output { min-width: 56px; text-align: center; color: var(--plum); }
+
+.strip {
+  position: relative;
+  display: flex;
+  width: fit-content;          /* the strip ends where the melody ends */
+  max-width: 100%;
+  padding: 18px 0 8px;
+  background: var(--cream);
+  border: 2px solid var(--plum);
+  border-radius: 6px;
+  box-shadow: 6px 6px 0 var(--lilac);
+}
+.strip::before {
+  /* the pink binder bar along the top */
+  content: "";
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  top: -12px;
+  height: 18px;
+  border-radius: 9px;
+  background: linear-gradient(180deg, #f9b8d2 0%, #f07fae 45%, #e0579a 100%);
+  box-shadow: inset 0 3px 0 rgba(255, 255, 255, 0.5), 0 2px 0 rgba(160, 40, 100, 0.35);
+  z-index: 1;
+}
+.strip::after {
+  /* the binder rings */
+  content: "";
+  position: absolute;
+  left: 40px;
+  right: 40px;
+  top: -20px;
+  height: 34px;
+  background-image: linear-gradient(90deg, transparent 0 4px, #f6a6c8 4px 9px, #d24c8b 9px 11px, transparent 11px);
+  background-size: 64px 100%;
+  border-radius: 4px;
+  z-index: 2;
+  pointer-events: none;
+}
+.grid-labels { flex: none; width: 46px; border-right: 2px solid var(--pink); background: var(--cream); }
+.grid-labels span { display: flex; align-items: center; justify-content: flex-end; padding-right: 9px; font-size: 0.7rem; font-weight: 700; color: var(--plum-soft); }
+.grid-labels span.c { color: var(--pink-deep); font-weight: 900; }
+.grid-labels span.black { background: var(--sky); }
+.grid-scroll { flex: 1; min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-color: var(--pink) var(--cream); }
+.grid { display: block; cursor: crosshair; touch-action: pan-x; }
+.strip-note { margin: 16px 0 0; font-size: 0.92rem; color: var(--plum-soft); }
+
+.colophon { margin-top: 44px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: 0.85rem; color: var(--plum-soft); }
+.colophon p { margin: 0; }
+.credit { color: var(--pink-deep); font-weight: 800; text-decoration: none; }
+.credit:hover { text-decoration: underline; text-underline-offset: 3px; }
+.gift-credit {
+  position: absolute;
+  right: 14px;
+  bottom: 12px;
+  z-index: 7;
+  padding: 4px 12px;
+  font-size: 0.82rem;
+  background: rgba(255, 251, 240, 0.9);
+  border-radius: 999px;
+}
+.turn-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--plum);
+  background: rgba(255, 251, 240, 0.92);
+  border: 2px dashed var(--pink);
+  border-radius: 999px;
+  transition: opacity 0.6s ease;
+}
+.turn-hint .ic { width: 16px; height: 16px; color: var(--pink-deep); }
+.turn-hint.used { opacity: 0.45; }
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  padding: 10px 18px;
+  color: var(--plum);
+  font-weight: 700;
+  background: #fff;
+  border: 2px solid var(--plum);
+  border-radius: 14px;
+  box-shadow: 0 4px 0 var(--plum);
+  font-size: 0.95rem;
+  z-index: 40;
+}
+
+/* ---------------------------------------------------------------- gift view: hand-drawn pastel stripes */
+.gift {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background-color: #fff8ea;
+  background-image:
+    radial-gradient(55% 50% at 50% 48%, rgba(255, 251, 240, 0.92) 0%, rgba(255, 251, 240, 0.55) 55%, transparent 80%),
+    repeating-linear-gradient(90deg,
+      #f9c6da 0 46px, #fff8ea 46px 52px, #f6e7a8 52px 56px, #fff8ea 56px 62px,
+      #cdebcb 62px 88px, #fff8ea 88px 94px, #d6c7ec 94px 98px, #fff8ea 98px 108px,
+      #bfe0f2 108px 160px, #fff8ea 160px 166px, #f48fb8 166px 169px, #fff8ea 169px 178px,
+      #fbefc1 178px 204px, #fff8ea 204px 212px, #cdb6e0 212px 216px, #fff8ea 216px 226px);
+}
+.gift-canvas, .notes-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.gift-canvas { touch-action: none; cursor: grab; opacity: 0; transition: opacity 1.2s ease; }
+.gift.revealed .gift-canvas { opacity: 1; }
+.notes-canvas { pointer-events: none; z-index: 2; }
+
+/* step 1: envelope */
+.envelope-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px;
+  text-align: center;
+  transition: opacity 0.7s ease 0.9s, transform 0.9s ease 0.9s;
+}
+.envelope-scene.opening { opacity: 0; transform: translateY(40px) scale(0.92); pointer-events: none; }
+.env-to { margin: 0; font: 700 clamp(2.6rem, 8vw, 4.2rem)/1.05 var(--round); color: var(--pink-deep); text-shadow: 3px 3px 0 #fff; }
+.env-from { margin: 0; font: 600 1.35rem var(--round); color: var(--plum); min-height: 1.4em; }
+.env-hint { margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--plum-soft); }
+.envelope {
+  position: relative;
+  width: min(380px, 82vw);
+  aspect-ratio: 1.55;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  perspective: 900px;
+  filter: drop-shadow(0 6px 0 rgba(91, 54, 84, 0.18));
+}
+.env-back, .env-pocket, .env-flap, .env-letter { position: absolute; left: 0; right: 0; display: block; }
+.env-back { inset: 0; background: #b9d6f2; border-radius: 6px; }
+.env-letter {
+  left: 7%;
+  right: 7%;
+  top: 8%;
+  bottom: 6%;
+  display: grid;
+  place-items: center;
+  background: var(--cream) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60'%3E%3Cpolygon points='21.2,12.1 22.1,16.1 26.0,17.3 22.5,19.4 22.5,23.5 19.4,20.8 15.6,22.1 17.1,18.3 14.8,15.0 18.8,15.4' fill='%23f48fb8' opacity='0.9' stroke='%23f48fb8' stroke-width='2' stroke-linejoin='round'/%3E%3Cpolygon points='82.5,35.2 84.8,37.7 88.1,37.1 86.4,40.0 88.0,43.0 84.7,42.3 82.4,44.7 82.0,41.4 79.0,39.9 82.1,38.6' fill='%23f7d36b' opacity='0.9' stroke='%23f7d36b' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E");
+  border-radius: 4px;
+  font: 600 2.4rem var(--round);
+  color: var(--pink-deep);
+  transition: transform 0.8s cubic-bezier(.2, .9, .3, 1) 0.45s;
+}
+.env-pocket {
+  inset: 0;
+  background: linear-gradient(160deg, #d3e6f9, #c4dcf5);
+  clip-path: polygon(0 0, 50% 58%, 100% 0, 100% 100%, 0 100%);
+  border-radius: 6px;
+}
+.env-flap {
+  top: 0;
+  height: 60%;
+  background: linear-gradient(180deg, #e2eefb, #c9def5);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  transform-origin: 50% 0;
+  transition: transform 0.6s ease 0.15s;
+  z-index: 2;
+}
+.seal {
+  position: absolute;
+  left: 50%;
+  top: 60%;
+  z-index: 3;
+  width: 66px;
+  height: 66px;
+  margin: -33px 0 0 -33px;
+  display: grid;
+  place-items: center;
+  border-radius: 47% 53% 50% 50% / 52% 46% 54% 48%;
+  background: radial-gradient(circle at 36% 30%, #ffc1da 0%, #ec6fa6 42%, #c43f7e 100%);
+  box-shadow: 0 0 0 3px #d4558f, 0 4px 0 rgba(140, 30, 85, 0.35), inset 0 -3px 6px rgba(120, 10, 60, 0.3);
+  font: 600 1.9rem var(--round);
+  color: #fff;
+  text-shadow: 0 2px 0 rgba(140, 30, 85, 0.45);
+  transition: transform 0.35s ease, opacity 0.35s ease;
+}
+.envelope:hover .seal { transform: scale(1.06) rotate(-5deg); }
+.envelope.open .seal { transform: scale(1.35) rotate(-12deg); opacity: 0; }
+.envelope.open .env-flap { transform: rotateX(180deg); z-index: 0; }
+.envelope.open .env-letter { transform: translateY(-46%); }
+
+/* step 2: the box */
+.gift-top { position: relative; z-index: 3; padding: 30px 20px 0; text-align: center; pointer-events: none; transition: opacity 0.8s, transform 0.8s; }
+.gift-top h1 { font-size: clamp(2.6rem, 7vw, 4rem); font-weight: 700; color: var(--pink-deep); line-height: 1.05; text-shadow: 3px 3px 0 #fff; }
+.gift-sub { margin: 4px 0 0; font: 600 1.3rem var(--round); color: var(--plum); }
+.gift.open .gift-top { opacity: 0; transform: translateY(-12px); }
+.gift-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  padding: 0 20px 34px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  pointer-events: none;
+}
+.gift-bottom > * { pointer-events: auto; }
+.key-hint {
+  position: absolute;
+  z-index: 3;
+  width: 76px;
+  height: 76px;
+  margin: -38px 0 0 -38px;
+  border: 3px dashed var(--pink-deep);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: key-pulse 1.8s ease-out infinite;
+}
+.key-hint span {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  white-space: nowrap;
+  padding: 2px 12px;
+  font: 600 1.1rem var(--round);
+  color: var(--pink-deep);
+  background: #fff;
+  border-radius: 999px;
+}
+.key-hint.flip span { left: auto; right: 30%; transform: none; }
+@keyframes key-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(201, 70, 131, 0.45); }
+  100% { box-shadow: 0 0 0 22px rgba(201, 70, 131, 0); }
+}
+.gift-actions { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.gift-more { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.gift-more .btn { display: inline-flex; align-items: center; gap: 8px; }
+.gift-more .ic { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+#wind:disabled { opacity: 1; cursor: default; filter: saturate(0.6); }
+#read { animation: rise 0.9s ease both; }
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } }
+
+/* "Tap the note to read it": a pulsing label sitting on the card in the lid */
+.note-hint {
+  position: absolute;
+  z-index: 3;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.note-hint span {
+  display: block;
+  padding: 5px 14px;
+  font: 600 1rem var(--round);
+  white-space: nowrap;
+  color: #fff;
+  background: var(--pink-deep);
+  border-radius: 999px;
+  box-shadow: 0 0 0 3px #fff;
+  animation: note-pulse 1.6s ease-in-out infinite;
+}
+@keyframes note-pulse { 50% { transform: scale(1.07); } }
+
+/* the note, unfolded as a letter */
+.letter-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  display: grid;
+  place-items: center;
+  padding: 24px 18px;
+  background: rgba(91, 54, 84, 0.32);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  animation: fade-in 0.3s ease both;
+}
+@keyframes fade-in { from { opacity: 0; } }
+.letter {
+  position: relative;
+  width: min(440px, 100%);
+  max-height: min(78vh, 640px);
+  overflow-y: auto;
+  padding: 34px 30px 24px;
+  color: var(--plum);
+  background-color: var(--cream);
+  background-image: repeating-linear-gradient(transparent 0 31px, rgba(201, 70, 131, 0.22) 31px 33px);
+  background-position: 0 30px;
+  border-radius: 6px;
+  box-shadow: 0 0 0 8px #fff, 0 0 0 10px var(--pink), 0 18px 40px rgba(91, 54, 84, 0.3);
+  transform-origin: 50% 0;
+  animation: unfold 0.55s cubic-bezier(.2, .9, .3, 1.15) both;
+}
+.letter:focus { outline: none; }
+@keyframes unfold { from { opacity: 0; transform: perspective(700px) rotateX(-70deg) translateY(30px); } }
+.letter-to { margin: 0 0 4px; font: 600 1.5rem/1.3 var(--round); color: var(--pink-deep); }
+.letter-text {
+  margin: 0;
+  font: 700 1.12rem/33px var(--ui);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;        /* "AJAJAJAJ…" with no spaces still wraps */
+}
+.letter-from { margin: 10px 0 18px; text-align: right; font: 600 1.2rem var(--round); color: var(--pink-deep); }
+.letter-from:empty { display: none; }
+.letter .btn { display: block; margin: 0 auto; min-width: 140px; }
+.gift-error {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 24px;
+  text-align: center;
+  font: 700 1.15rem/1.5 var(--ui);
+  color: var(--plum);
+}
+
+/* ---------------------------------------------------------------- smaller screens */
+@media (max-width: 1000px) {
+  .studio {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "head" "bench" "melody" "foot";
+  }
+  /* Box first, then "Wrap it up" right under it. The box sits on a cream display shelf that
+     stays pinned at the top while you scroll through finishes and figures, so you can see
+     every change. It lets go once you reach the melody. */
+  .bench { display: block; grid-area: bench; }
+  .stage {
+    position: sticky;
+    top: 0;
+    z-index: 6;
+    margin: 0 calc(-1 * var(--pad));
+    padding: 0 var(--pad);
+    background: var(--cream);
+    border-bottom: 2px dashed var(--pink);
+    box-shadow: 0 6px 0 rgba(244, 143, 184, 0.18);
+  }
+  .box-canvas { height: 42vh; height: 42svh; min-height: 240px; }
+  /* Play floats on the shelf, over the empty corner under the box */
+  .stage-controls { position: absolute; left: var(--pad); bottom: 12px; margin: 0; }
+  .tag { margin: 28px auto 0; width: 100%; max-width: 520px; }
+}
+/* phones on their side: too short to pin the box */
+@media (max-width: 1000px) and (max-height: 520px) {
+  .stage { position: relative; }
+  .box-canvas { height: 78vh; min-height: 0; }
+}
+@media (max-width: 600px) {
+  .studio { --pad: 14px; padding: 22px var(--pad) 28px; }
+  .masthead { margin-bottom: 14px; }
+  /* the gift tag on a phone: a plain rounded label (the cut corners got cramped this narrow) */
+  .tag { padding: 40px 18px 22px; border-radius: 20px; clip-path: none; }
+  .tag::before { clip-path: none; border-radius: 13px; inset: 8px; }
+  .tag-hole { top: 16px; }
+  .tag h2 { font-size: 1.65rem; }
+  .field { margin-top: 16px; }
+  .swatch-row { gap: 8px; }
+  /* 16px or more stops iPhones zooming in when you tap a box */
+  .tool select, .share-row input, .field.line input, .field.line textarea { font-size: 16px; }
+  .hint { display: none; }
+  .melody-head { flex-direction: column; align-items: stretch; }
+  .toolbar { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; }
+  .tool select { min-width: 0; width: 100%; }
+  .tool input[type="range"] { width: 100%; }
+  .tool-end { grid-column: 1 / -1; justify-content: flex-start; margin-left: 0; }
+  .gift-credit { right: 50%; transform: translateX(50%); bottom: 6px; }
+  .gift-bottom { padding-bottom: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; transition-delay: 0s !important; animation: none !important; }
+}
