@@ -9,7 +9,7 @@ import { createMusicBox } from './box3d.js';
 import { createGrid } from './grid.js';
 
 const $ = (id) => document.getElementById(id);
-const STORE = 'musicbox-studio';
+const STORE = 'musicbox-studio'; // older versions saved the last box here; it's now cleared
 const audio = new MusicBoxAudio();
 
 function toast(text) {
@@ -57,7 +57,6 @@ function startGift(code) {
   $('seal-letter').textContent = gift.from ? [...gift.from.trim()][0].toUpperCase() : '♪';
   $('gift-heading').textContent = gift.to || 'For you';
   $('gift-sub').textContent = gift.from ? `from ${gift.from}` : '';
-  $('remix').href = `./#song=${encode(song, createGift())}`;
   if (gift.to) document.title = `A music box: ${gift.to}`;
 
   const box = createMusicBox($('gift-canvas'), { onKey: wind, onLid: wind, onCard: () => openLetter(), onTurn: () => $('turn-hint').classList.add('used'), distance: 44, minDist: 38 });
@@ -218,23 +217,15 @@ function floatingNotes(canvas, box) {
 function startStudio(remixCode) {
   let song;
   let gift = createGift();
-  try {
-    const saved = JSON.parse(localStorage.getItem(STORE) || 'null');
-    if (saved && saved.song) {
-      const restored = decode(saved.song);
-      song = restored.song;
-      gift = restored.gift;
-    }
-  } catch { /* nothing saved, or saved by an older version */ }
+  // Every visit starts fresh with the default box (nothing is remembered between visits).
+  try { localStorage.removeItem(STORE); } catch { /* storage blocked */ }
   if (remixCode) {
     try { song = decode(remixCode).song; history.replaceState(null, '', location.pathname); toast('Their tune is on the strip. Change it however you like.'); } catch { /* ignore a broken link */ }
   }
   if (!song) song = cloneSong(TUNES[0].song);
 
   const undo = [];
-  const save = () => {
-    try { localStorage.setItem(STORE, JSON.stringify({ song: encode(song, gift) })); } catch { /* storage full or blocked */ }
-  };
+  const save = () => {}; // kept so edits have one place to hook into; nothing is stored
 
   // ---------- 3D box ----------
   const box = createMusicBox($('box-canvas'), { onKey: togglePlay, onLid: () => box.setLid(!box.lidOpen) });

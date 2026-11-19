@@ -67,10 +67,9 @@ with sync_playwright() as p:
     check('#gift=' in url and len(url) < 400, f'gift link created ({len(url)} chars)')
     pg.screenshot(path=f'{OUT}/studio-gift.png')
 
-    # reload keeps the work
+    # a new visit (or refresh) starts again from the default box
     pg.reload(); pg.wait_for_timeout(900)
-    check(pg.inner_text('#note-count') == '11' and pg.input_value('#gift-to') == 'For Mei', 'work is kept after reload')
-    check(pg.get_attribute('#figures [data-id="cake"]', 'aria-checked') == 'true', 'figure choice is kept after reload')
+    check(pg.input_value('#gift-to') == '' and pg.get_attribute('#figures [data-id="ballerina"]', 'aria-checked') == 'true', 'refreshing starts again with the default box')
 
     # ---- recipient ----
     g = b.new_context(viewport={'width': 1280, 'height': 860}).new_page()
@@ -116,6 +115,9 @@ with sync_playwright() as p:
     check(g.is_hidden('#letter') and g.is_hidden('#note-tip'), 'the letter closes, and the tip goes away')
     g.wait_for_selector('#gift-after:not([hidden])', timeout=20000)
     check(g.is_visible('#again') and g.is_visible('#remix'), 'play it again and make one back appear once it ends')
+    g.click('#remix'); g.wait_for_selector('#studio:not([hidden])'); g.wait_for_timeout(800)
+    check('#' not in g.url and g.input_value('#gift-to') == '' and g.get_attribute('#figures [data-id="ballerina"]', 'aria-checked') == 'true', 'make one back opens a fresh default box')
+    g.goto(url); g.wait_for_timeout(1000)
     g.screenshot(path=f'{OUT}/gift-done.png')
 
     # broken link
